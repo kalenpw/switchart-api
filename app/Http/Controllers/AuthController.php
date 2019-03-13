@@ -33,14 +33,7 @@ class AuthController extends Controller
             $token = auth()->login($user);
             return $this->respondWithToken($token);
         }
-        // return $user;
-        // $credentials = ['email' => $email, 'password' => $password];
-        // $credentials = request(['email', 'password']);
-        // if (! $token = auth()->attempt($credentials)) {
         return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-
-        // return $this->respondWithToken($token);
     }
 
     public function logout()
