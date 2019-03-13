@@ -12,23 +12,35 @@ class AuthController extends Controller
         $user = User::create([
             'email'    => $request->email,
             'name' => $request->name,
-            'password' => hash("sha256", $request->password)
+            'password' => hash('sha256', ($request->password))
         ]);
 
         $token = auth()->login($user);
+        return $token;
 
         return $this->respondWithToken($token);
     }
 
     public function login()
     {
-        $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $email = request('email');
+        // $password = request('password');
+        $password = hash('sha256', request('password'));
+        $user = User::where('email', $email)
+            ->where('password', $password)
+            ->first();
+        if ($user) {
+            $token = auth()->login($user);
+            return $this->respondWithToken($token);
         }
+        // return $user;
+        // $credentials = ['email' => $email, 'password' => $password];
+        // $credentials = request(['email', 'password']);
+        // if (! $token = auth()->attempt($credentials)) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+        // }
 
-        return $this->respondWithToken($token);
+        // return $this->respondWithToken($token);
     }
 
     public function logout()
@@ -43,7 +55,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'bearer',
-            'expires_in'   => auth()->factory()->getTTL() * 60
+            'expires_in'   => auth('api')->factory()->getTTL() * 60
         ]);
     }
 }
