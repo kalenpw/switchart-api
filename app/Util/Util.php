@@ -20,8 +20,8 @@ class Util
     {
         $games = \App\Game::all();
         foreach ($games as $game) {
-            if (self::formatGameName($game->title) == $title) {
-                return $game->title;
+            if (self::formatGameName($game->name) == $title) {
+                return $game->name;
             }
         }
         return "";

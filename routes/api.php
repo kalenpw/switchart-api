@@ -22,6 +22,10 @@ Route::get('/games/', 'GamesController@index');
 Route::get('/games/{name}', 'GamesController@show');
 Route::post('/games/store', 'GamesController@store');
 
+Route::post('/users/show', 'UsersController@show');
+
+Route::post('/artwork/store', 'ArtworkController@store');
+
 Route::post('/test', function (Request $request) {
     $requestToken = $request->token;
     $token = JWTAuth::getToken();
