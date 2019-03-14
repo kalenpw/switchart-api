@@ -25,6 +25,8 @@ Route::post('/games/store', 'GamesController@store');
 Route::post('/users/show', 'UsersController@show');
 
 Route::post('/artwork/store', 'ArtworkController@store');
+Route::get('/artwork/id/{id}', 'ArtworkController@showId');
+Route::get('/artwork/game/{name}', 'ArtworkController@show');
 
 Route::post('/test', function (Request $request) {
     $requestToken = $request->token;

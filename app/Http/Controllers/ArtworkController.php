@@ -7,6 +7,18 @@ use Illuminate\Http\Request;
 
 class ArtworkController extends Controller
 {
+    public function show($name)
+    {
+        $dbName = \App\Util\Util::getTitleFromFormattedTitle($name);
+        $game = \App\Game::where('name', $dbName)->first();
+        return \App\Artwork::where('gameId', $game->id)->get();
+    }
+
+    public function showId($id)
+    {
+        return \App\Artwork::where('id', $id)->first();
+    }
+
     public function store(Request $request)
     {
         $requestToken = $request->token;
@@ -24,7 +36,7 @@ class ArtworkController extends Controller
             'token' => 'required'
         ]);
         $name = $request->name;
-        $path = $request->file('artwork')->store('artworks');
+        $path = $request->file('artwork')->store('public/artworks');
         $game = \App\Game::where('name', $name)->first();
         $gameId = $game->id;
 
