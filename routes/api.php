@@ -28,6 +28,9 @@ Route::post('/artwork/store', 'ArtworkController@store');
 Route::get('/artwork/id/{id}', 'ArtworkController@showId');
 Route::get('/artwork/game/{name}', 'ArtworkController@show');
 
+Route::post('/vote/upvote/', 'VoteController@upvote');
+Route::post('/vote/downvote/', 'VoteController@downvote');
+
 Route::post('/test', function (Request $request) {
     $requestToken = $request->token;
     $token = JWTAuth::getToken();
