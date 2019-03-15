@@ -30,6 +30,7 @@ Route::get('/artwork/game/{name}', 'ArtworkController@show');
 
 Route::post('/vote/upvote/', 'VoteController@upvote');
 Route::post('/vote/downvote/', 'VoteController@downvote');
+Route::get('/vote/artwork/{id}', 'VoteController@artworkVotes');
 
 Route::post('/test', function (Request $request) {
     $requestToken = $request->token;
