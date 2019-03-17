@@ -27,6 +27,7 @@ Route::post('/users/show', 'UsersController@show');
 Route::post('/artwork/store', 'ArtworkController@store');
 Route::get('/artwork/id/{id}', 'ArtworkController@showId');
 Route::get('/artwork/game/{name}', 'ArtworkController@show');
+Route::get('/artwork/user/{id}', 'ArtworkController@getUsers');
 
 Route::post('/vote/upvote/', 'VoteController@upvote');
 Route::post('/vote/downvote/', 'VoteController@downvote');

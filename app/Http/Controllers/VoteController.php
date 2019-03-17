@@ -21,16 +21,9 @@ class VoteController extends Controller
     public function upvote(Request $request)
     {
         $artworkId = $request->artworkId;
-        $requestToken =  $request->token;
         $token = JWTAuth::getToken();
-        $userId = -1;
-
-        if ($token == $requestToken) {
-            $apy = JWTAuth::getPayload($token)->toArray();
-            $userId = $apy['sub'];
-        } else {
-            return "Not validated";
-        }
+        $apy = JWTAuth::getPayload($token)->toArray();
+        $userId = $apy['sub'];
 
         $vote = \App\Vote::where('userId', $userId)->where('artworkId', $artworkId)->first();
 

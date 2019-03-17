@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class ArtworkController extends Controller
 {
+    public function getUsers($name)
+    {
+        $user = \App\User::where('name', $name)->first();
+        $artworks = \App\Artwork::where('userId', $user->id)->get();
+        return $artworks;
+    }
+
     public function show($name)
     {
         $dbName = \App\Util\Util::getTitleFromFormattedTitle($name);
@@ -21,18 +28,13 @@ class ArtworkController extends Controller
 
     public function store(Request $request)
     {
-        $requestToken = $request->token;
         $token = JWTAuth::getToken();
+        $apy = JWTAuth::getPayload($token)->toArray();
+        $userId = $apy['sub'];
 
-        if ($token == $requestToken) {
-            $apy = JWTAuth::getPayload($token)->toArray();
-            $userId = $apy['sub'];
-        } else {
-            return "Not validated";
-        }
         request()->validate([
             'name' => 'required',
-            'artwork' => 'required',
+            'artwork' => 'required|mimes:jpeg,jpg,png',
             'token' => 'required'
         ]);
         $name = $request->name;

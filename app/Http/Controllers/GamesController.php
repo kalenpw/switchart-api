@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use \App\Util\Util;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 
 class GamesController extends Controller
@@ -19,10 +21,17 @@ class GamesController extends Controller
 
     public function store()
     {
-        $attributes = request()->validate([
-            'name' => 'required',
-            'description' => 'required'
-        ]);
-        return \App\Game::create($attributes);
+        $token = JWTAuth::getToken();
+        $apy = JWTAuth::getPayload($token)->toArray();
+        $userId = $apy['sub'];
+        if (Util::isAdmin($userId)) {
+            $attributes = request()->validate([
+                'name' => 'required',
+                'description' => 'required'
+            ]);
+            return \App\Game::create($attributes);
+        }
+
+        return \Response::json(['message' => "Not an admin"], 403);
     }
 }

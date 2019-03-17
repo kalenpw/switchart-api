@@ -4,6 +4,20 @@ namespace App\Util;
 
 class Util
 {
+    public static function isAdmin($id)
+    {
+        $user = \App\User::where('id', $id)->first();
+        $adminAccounts = [
+            'kalenpw',
+            'k'
+        ];
+        if ($user && in_array($user->name, $adminAccounts)) {
+            return true;
+        }
+        return false;
+    }
+
+
     /**
      * Removes any non alphanumeric characters and replaces white space with underscores
      * @param string $title - the title to be formatted
