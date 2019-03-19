@@ -10,7 +10,7 @@ class GamesController extends Controller
 {
     public function index()
     {
-        return \App\Game::all();
+        return \App\Game::orderBy('name')->get();
     }
 
     public function byId($id)

@@ -27,6 +27,7 @@ Route::post('/games/store', 'GamesController@store');
 Route::post('/users/show', 'UsersController@show');
 
 Route::post('/artwork/store', 'ArtworkController@store');
+Route::post('/artwork/destroy', 'ArtworkController@destroy');
 Route::get('/artwork/id/{id}', 'ArtworkController@showId');
 Route::get('/artwork/game/{name}', 'ArtworkController@show');
 Route::get('/artwork/user/{id}', 'ArtworkController@getUsers');

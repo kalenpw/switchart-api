@@ -7,6 +7,22 @@ use Illuminate\Http\Request;
 
 class ArtworkController extends Controller
 {
+    public function destroy(Request $request)
+    {
+        $token = JWTAuth::getToken();
+        $apy = JWTAuth::getPayload($token)->toArray();
+        $userId = $apy['sub'];
+        // return $request->id;
+        $artwork = \App\Artwork::where('id', $request->id)->first();
+        if ($userId = $artwork->userId) {
+            $artwork->delete();
+            return \Response::json(['message' => "Succesfully deleted."], 200);
+        } else {
+            return \Response::json(['message' => "You can only delete your own artworks."], 403);
+        }
+        return \Response::json(['message' => "Please login to delete an artwork."], 403);
+    }
+
     public function getUsers($name)
     {
         $user = \App\User::where('name', $name)->first();
