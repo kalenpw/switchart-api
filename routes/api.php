@@ -19,7 +19,9 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 
 Route::get('/games/', 'GamesController@index');
-Route::get('/games/{name}', 'GamesController@show');
+Route::get('/games/name/{name}', 'GamesController@show');
+Route::get('/games/id/{id}', 'GamesController@byId');
+Route::post('/games/update/', 'GamesController@update');
 Route::post('/games/store', 'GamesController@store');
 
 Route::post('/users/show', 'UsersController@show');

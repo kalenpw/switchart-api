@@ -13,6 +13,29 @@ class GamesController extends Controller
         return \App\Game::all();
     }
 
+    public function byId($id)
+    {
+        return \App\Game::where('id', $id)->first();
+    }
+
+    public function update(Request $request)
+    {
+        $token = JWTAuth::getToken();
+        $id = $request->id;
+        $name = $request->name;
+        $description = $request->description;
+
+        $apy = JWTAuth::getPayload($token)->toArray();
+        $userId = $apy['sub'];
+        if (Util::isAdmin($userId)) {
+            $game = \App\Game::where('id', $id)->first();
+            $game->name = $name;
+            $game->description = $description;
+            return \Response::json($game->save());
+        }
+        return \Response::json(['message' => "Not an admin"], 403);
+    }
+
     public function show($name)
     {
         $dbName = \App\Util\Util::getTitleFromFormattedTitle($name);
