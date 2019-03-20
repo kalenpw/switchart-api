@@ -50,7 +50,7 @@ class ArtworkController extends Controller
 
         request()->validate([
             'name' => 'required',
-            'artwork' => 'required|mimes:jpeg,jpg,png',
+            'artwork' => 'required|mimes:jpeg,jpg,png|max:11000',
             'token' => 'required'
         ]);
         $name = $request->name;
