@@ -42,17 +42,26 @@ class GamesController extends Controller
         return \App\Game::where('name', $dbName)->first();
     }
 
-    public function store()
+    public function store(Request $request)
     {
         $token = JWTAuth::getToken();
         $apy = JWTAuth::getPayload($token)->toArray();
         $userId = $apy['sub'];
         if (Util::isAdmin($userId)) {
             $attributes = request()->validate([
+                'token' => 'required',
                 'name' => 'required',
-                'description' => 'required'
+                'description' => 'required',
+                'image' => 'required|mimes:jpeg,jpg,png'
             ]);
-            return \App\Game::create($attributes);
+            $name = $request->name;
+            $description = $request->description;
+            $path = $request->file('image')->store('public/games');
+            return \App\Game::create([
+                'name' => $name,
+                'description' => $description,
+                'image' => $path
+            ]);
         }
 
         return \Response::json(['message' => "Not an admin"], 403);
