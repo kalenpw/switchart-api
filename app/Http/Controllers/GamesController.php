@@ -24,11 +24,17 @@ class GamesController extends Controller
         $id = $request->id;
         $name = $request->name;
         $description = $request->description;
+        $file = $request->file('image');
 
         $apy = JWTAuth::getPayload($token)->toArray();
         $userId = $apy['sub'];
         if (Util::isAdmin($userId)) {
             $game = \App\Game::where('id', $id)->first();
+
+            if ($file) {
+                $path = $file->store('public/games');
+                $game->image = $path;
+            }
             $game->name = $name;
             $game->description = $description;
             return \Response::json($game->save());
