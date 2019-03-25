@@ -9,14 +9,9 @@ class VoteController extends Controller
 {
     public function artworkVotes($artworkId)
     {
-        $votes = \App\Vote::where('artworkId', $artworkId)->get();
-        $totalVoteCount = 0;
-        foreach ($votes as $vote) {
-            $totalVoteCount = $totalVoteCount + $vote->vote;
-        }
-        return $totalVoteCount;
+        $artwork = \App\Artwork::where('id', $artworkId)->first();
+        return $artwork->getNetVotes();
     }
-
 
     public function upvote(Request $request)
     {

@@ -8,4 +8,9 @@ class Game extends Model
 {
     //
     protected $guarded = [];
+
+    public function getArtworks()
+    {
+        return \App\Artwork::where('gameId', $this->id)->get();
+    }
 }

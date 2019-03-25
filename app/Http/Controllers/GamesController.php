@@ -10,12 +10,18 @@ class GamesController extends Controller
 {
     public function index()
     {
-        return \App\Game::orderBy('name')->get();
+        $games = \App\Game::orderBy('name')->get();
+        foreach ($games as $game) {
+            $game->setAttribute('artworks', $game->getArtworks());
+        }
+        return $games;
     }
 
     public function byId($id)
     {
-        return \App\Game::where('id', $id)->first();
+        $game = \App\Game::where('id', $id)->first();
+        $game->setAttribute('artworks', $game->getArtworks());
+        return $game;
     }
 
     public function update(Request $request)

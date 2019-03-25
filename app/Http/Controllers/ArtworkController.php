@@ -34,12 +34,18 @@ class ArtworkController extends Controller
     {
         $dbName = \App\Util\Util::getTitleFromFormattedTitle($name);
         $game = \App\Game::where('name', $dbName)->first();
-        return \App\Artwork::where('gameId', $game->id)->get();
+        $artworks = \App\Artwork::where('gameId', $game->id)->get();
+        foreach ($artworks as $artwork) {
+            $artwork->setAttribute("netVotes", $artwork->getNetVotes());
+        }
+        return $artworks;
     }
 
     public function showId($id)
     {
-        return \App\Artwork::where('id', $id)->first();
+        $artwork = \App\Artwork::where('id', $id)->first();
+        $artwork->setAttribute("netVotes", $artwork->getNetVotes());
+        return $artwork;
     }
 
     public function store(Request $request)
@@ -56,6 +62,7 @@ class ArtworkController extends Controller
         $name = $request->name;
         $path = $request->file('artwork')->store('public/artworks');
         $game = \App\Game::where('name', $name)->first();
+        $game->touch();
         $gameId = $game->id;
 
         return \App\Artwork::create([
